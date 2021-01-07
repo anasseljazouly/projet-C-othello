@@ -18,16 +18,8 @@ typedef struct
 {
     int x;
     int y;
-}coord;
-typedef struct azadzacontour
-{
-    int p_north;
-    int p_north_west;
-    int p_north_east;
-    int p_south;
-    int p_south_west;
-    int p_south_east;
-};
+}coord;//not used but we may need it later
+
 
 typedef enum{
         //<=                                 //=>
@@ -38,11 +30,12 @@ typedef enum{
 
 
 
-void highlight_if_possible(int type,int direction,int **board,int pos_l,int pos_c);
+//if we change the board to make it local variable istead of global we should add the paramettre board in tp the functions
+
 int still_in_board(int pos_l,int pos_c);
-int contour (int **board,int pos_l,int pos_c,int player);
-int search_player(int **board,int pos_l,int pos_c,int player,int player_origin,int dl,int dc);
-void mark_position(int **board,int pos_l,int pos_c);
+int contour (int pos_l,int pos_c,int player);
+int search_player(int pos_l,int pos_c,int player,int player_origin,int dl,int dc);
+void mark_position(int pos_l,int pos_c);
 
 ///////////////////////////////////////////////////////////////////
 int search(int **board,coord point,int *directions);
@@ -60,7 +53,7 @@ int main()
 
 
 
-int contour (int **board,int pos_l,int pos_c,int player)
+int contour (int pos_l,int pos_c,int player)
 {   
     int direction;
     for(direction=-3;direction<5;direction++)
@@ -68,35 +61,35 @@ int contour (int **board,int pos_l,int pos_c,int player)
         switch (direction)
         {
         case north://-1 0
-           search_player(board,pos_l,pos_c,-player,player,-1,0);
+           search_player(pos_l,pos_c,-player,player,-1,0);
 
             break;
         case north_east://-1 +1
-            search_player(board,pos_l,pos_c,-player,player,-1,1);
+            search_player(pos_l,pos_c,-player,player,-1,1);
 
             break;
         case north_west://-1 -1
-            search_player(board,pos_l,pos_c,-player,player,-1,-1);
+            search_player(pos_l,pos_c,-player,player,-1,-1);
 
             break;
         case east:// 0 +1
-            search_player(board,pos_l,pos_c,-player,player,0,1);
+            search_player(pos_l,pos_c,-player,player,0,1);
 
             break;
         case west:// 0 -1
-            search_player(board,pos_l,pos_c,-player,player,0,-1);
+            search_player(pos_l,pos_c,-player,player,0,-1);
 
             break;
         case south://+1 0
-            search_player(board,pos_l,pos_c,-player,player,1,0);
+            search_player(pos_l,pos_c,-player,player,1,0);
 
             break;
         case south_east://+1 +1
-            search_player(board,pos_l,pos_c,-player,player,1,1);
+            search_player(pos_l,pos_c,-player,player,1,1);
 
             break;
          case south_west://+1 -1 
-            search_player(board,pos_l,pos_c,-player,player,1,-1);
+            search_player(pos_l,pos_c,-player,player,1,-1);
 
             break;
         default:
@@ -113,23 +106,23 @@ int still_in_board(int pos_l,int pos_c)//to check if we hit the boarder
     return 0; //else
 }
 
-int search_player(int **board,int pos_l,int pos_c,int opponent,int player,int dl,int dc)
+int search_player(int pos_l,int pos_c,int opponent,int player,int dl,int dc)
 {
     if (opponent==1 || opponent==-1) 
     {
         if (still_in_board(pos_l+dl,pos_c+dc) && board[pos_l+dl][pos_c+dc]==opponent)
             {
-                search_player(board,pos_l+dl,pos_c+dc,EMPTY,player,dl,dc);//cotour 0
+                search_player(pos_l+dl,pos_c+dc,EMPTY,player,dl,dc);//cotour 0
             }
             }
     else if (opponent==0)//to search for a zero we stop when we find a zero when we aren't in the board anymore or when we found the player color
     {
-        while(still_in_board(pos_l,pos_c) && board[pos_l][pos_c]==0 && board[pos_l][pos_c]!=player)
+        while(still_in_board(pos_l,pos_c) && board[pos_l][pos_c]!=0 && board[pos_l][pos_c]!=player)
         {
             pos_l+=dl;pos_c+=dc;//next case 
         }
         if (board[pos_l][pos_c]==0)
-            mark_position(board,pos_l,pos_c);
+            mark_position(pos_l,pos_c);
             return 1;
     }
     else 
@@ -137,7 +130,7 @@ int search_player(int **board,int pos_l,int pos_c,int opponent,int player,int dl
         return 0;
 }
 
-void mark_position(int **board,int pos_l,int pos_c)
+void mark_position(int pos_l,int pos_c)
 {
     board[pos_l][pos_c]=HIGHLIGHTER;//we can make a parallele board for the highliting and stack it on the original board 
                                     //and it may be also useful for turn playing 
