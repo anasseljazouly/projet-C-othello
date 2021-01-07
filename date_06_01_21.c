@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #define BLACK -1
 #define WHITE  1
-#define EMPTY 0
+#define EMPTY_SPACE 0
 #define HIGHLIGHTER 10
                 //0 1 2 3 4 5 6 7 
 int board[8][8]={{0,0,0,0,0,0,0,0}, //0
@@ -112,7 +112,7 @@ int search_player(int pos_l,int pos_c,int opponent,int player,int dl,int dc)
     {
         if (still_in_board(pos_l+dl,pos_c+dc) && board[pos_l+dl][pos_c+dc]==opponent)
             {
-                search_player(pos_l+dl,pos_c+dc,EMPTY,player,dl,dc);//cotour 0
+                search_player(pos_l+dl,pos_c+dc,EMPTY_SPACE,player,dl,dc);//cotour 0
             }
             }
     else if (opponent==0)//to search for a zero we stop when we find a zero when we aren't in the board anymore or when we found the player color
