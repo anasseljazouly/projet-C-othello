@@ -32,11 +32,15 @@ typedef enum{
 
 //if we change the board to make it local variable istead of global we should add the paramettre board in tp the functions
 
-int still_in_board(int pos_l,int pos_c);
-int contour (int pos_l,int pos_c,int player);
-int search_player(int pos_l,int pos_c,int player,int player_origin,int dl,int dc);
-void mark_position(int pos_l,int pos_c);
 
+
+int contour (int pos_l,int pos_c,int player);//v
+int still_in_board(int pos_l,int pos_c);//v
+int search_player(int pos_l,int pos_c,int player,int player_origin,int dl,int dc//v
+void mark_position(int pos_l,int pos_c);//v
+void display();//v
+void click_at(int click_l,int click_c);
+void set_color(int pos_l,int pos_c,int player);
 ///////////////////////////////////////////////////////////////////
 int search(int **board,coord point,int *directions);
 void case_possible(int **board,int player);
@@ -45,13 +49,16 @@ void fetch_contour(int pos_x,int pos_y,int player,int *nombre);
 
 int main()
 {
-    int i;
+    int found;
+    display();
+    contour(3,3,BLACK);
+    contour(4,4,BLACK);
+    printf("\n\n");
+    display();
 
-    
+
     return 0;
 }
-
-
 
 int contour (int pos_l,int pos_c,int player)
 {   
@@ -137,6 +144,58 @@ void mark_position(int pos_l,int pos_c)
 }
 
 
+void display()
+{
+    int i,j;
+    for (i=0;i<8;i++)
+    {
+        for (j=0;j<8;j++)
+        {
+            printf(" %d ",board[i][j]);
+        }
+        printf("\n");
+    }
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+//not checked yet
+////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+void set_color(int pos_l,int pos_c,int player)
+{   
+    int dl,dc,pos_l_b=pos_l,pos_c_b=pos_c;
+
+    for(dl=-1;dl<2;dl++)
+    {
+        for(dc=-1;dc<2 &&dc;dc++)
+        {  
+            if(dc==0 && dl==0)
+                continue;//skip this because it's not an actual contour
+            while(board[pos_l+dl][pos_c+dc]!=player && still_in_board(pos_l+dl,pos_c+dc))
+            {
+                pos_l+=dl;pos_c+=dc;
+                board[pos_l][pos_c]*=-1;
+            }
+            
+            if (!still_in_board(pos_l+dl,pos_c+dc))
+            {
+                for (;pos_l==pos_l_b ;pos_l-=dl,pos_c-=dc)
+                {
+                    board[pos_l][pos_c]*=-1;
+                }
+                
+            }
+            pos_l=pos_l_b;pos_c=pos_c_b;
+        }
+
+    }
+}
+
+void click_at(int click_l,int click_c)
+{
+    if (board[click_l][click_c]==HIGHLIGHTER)
+    {
+        
+    }
+}
 
 
