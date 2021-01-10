@@ -325,6 +325,8 @@ void tell_turn(int player)
 {
     if (player==BLACK)
         printf("IT'S BLACK'S TURN\n");
+        return ;
     else
         printf("IT'S WHITE'S TURN\n");
+        return ;
 }
