@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #define BLACK 1
 #define WHITE  -1
-#define EMPTY 0
+#define EMPTY_SPACE 0
 #define HIGHLIGHTER 2
 int TURN=BLACK;
                 //0 1 2 3 4 5 6 7
@@ -23,19 +23,19 @@ typedef enum{
 };
 
 
-int still_in_board(int pos_l,int pos_c);
-int contour (int pos_l,int pos_c,int player);
-int search_player(int pos_l,int pos_c,int player,int player_origin,int dl,int dc);
-void mark_position(int pos_l,int pos_c);
-void display();
-void display_h();
-void set_color(int pos_l,int pos_c,int player);
-int player_turn(int last_turn);
-void who_wins();
-void game();
-void click_at(int player);
-void reset_h();
-void tell_turn(int player);
+int still_in_board(int pos_l,int pos_c);//v
+int contour (int pos_l,int pos_c,int player);//v
+int search_player(int pos_l,int pos_c,int player,int player_origin,int dl,int dc);//v
+void mark_position(int pos_l,int pos_c);//v
+void display();//v
+void display_h();//v
+void set_color(int pos_l,int pos_c,int player);//v
+int player_turn(int last_turn);//v
+void who_wins();//v
+void game();//v
+void click_at(int player);//v
+void reset_h();//v
+void tell_turn(int player);//v
 
 int main()
 {
@@ -58,39 +58,36 @@ int  contour (int pos_l,int pos_c,int player) //this is the function that highli
         {
         case north://-1 0
            i+=search_player(pos_l,pos_c,-player,player,-1,0);
-
-
             break;
+            
         case north_east://-1 +1
             i+=search_player(pos_l,pos_c,-player,player,-1,1);
-
-
             break;
+            
         case north_west://-1 -1
             i+=search_player(pos_l,pos_c,-player,player,-1,-1);
-
-
             break;
+            
         case east:// 0 +1
             i+=search_player(pos_l,pos_c,-player,player,0,1);
-
             break;
+            
         case west:// 0 -1
             i+=search_player(pos_l,pos_c,-player,player,0,-1);
-
             break;
+            
         case south://+1 0
             i+=search_player(pos_l,pos_c,-player,player,1,0);
-
             break;
+            
         case south_east://+1 +1
             i+=search_player(pos_l,pos_c,-player,player,1,1);
-
             break;
+            
          case south_west://+1 -1
             i+=search_player(pos_l,pos_c,-player,player,1,-1);
-
             break;
+            
         default:
             printf("invalid direction");
             break;
@@ -102,8 +99,7 @@ int  contour (int pos_l,int pos_c,int player) //this is the function that highli
 //--------------------------------------------------------------------------------------------------
 void mark_position(int pos_l,int pos_c)         //v
 {
-    highlight_board[pos_l][pos_c]=HIGHLIGHTER;//we can make a parallele board for the highliting and stack it on the original board
-                                    //and it may be also useful for turn playing
+    highlight_board[pos_l][pos_c]=HIGHLIGHTER;
 }
 //--------------------------------------------------------------------------------------------------
 int still_in_board(int pos_l,int pos_c)//to check if we hit the boarder     //v
@@ -113,13 +109,13 @@ int still_in_board(int pos_l,int pos_c)//to check if we hit the boarder     //v
     return 0; //else
 }
 //--------------------------------------------------------------------------------------------------
-int search_player(int pos_l,int pos_c,int opponent,int player,int dl,int dc)//for the highlight return the highlight    //v
+int search_player(int pos_l,int pos_c,int opponent,int player,int dl,int dc)      //for the highlight return the highlight    //v
 {
     if (opponent==1 || opponent==-1)
     {
         if (still_in_board(pos_l+dl,pos_c+dc) && board[pos_l+dl][pos_c+dc]==opponent)
             {
-                search_player(pos_l+dl,pos_c+dc,EMPTY,player,dl,dc);//cotour 0
+                search_player(pos_l+dl,pos_c+dc,EMPTY_SPACE,player,dl,dc);//cotour 0
             }
             }
     else if (opponent==0)//to search for a zero we stop when we find a zero when we aren't in the board anymore or when we found the player color
@@ -205,7 +201,7 @@ int player_turn(int last_turn)//give who's player turn based on the last_turn wi
 
 //--------------------------------------------------------------------------------------------------
 //click_at(player_turn(last_turn))
-void click_at(int player)//it takes a player and demands to the user to enter a valid case where he want to move the board should be highlited
+void click_at(int player)//it takes a player and demands to the user to enter a valid case where he want to move the board should be highlighted
 {                        //and makes the move
     if (player==0)
         return ;
