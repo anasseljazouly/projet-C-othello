@@ -231,7 +231,7 @@ void click_at(int player)//it takes a player and demands to the user to enter a 
 void game()
 {
     int last_turn=WHITE;
-    printf("/////////////////welcome to OTHELLO/////////////////////\n");
+    printf("\n////////////////////////////////////////////////////////////\n/////////////////////WELCOME TO OTHELLO/////////////////////\n");
     do
     {
         last_turn=player_turn(last_turn);
