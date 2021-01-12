@@ -324,7 +324,7 @@ int search_player(int pos_l,int pos_c,int opponent,int player,int dl,int dc)    
         {
             pos_l+=dl;pos_c+=dc;//next case
         }
-        if (board[pos_l][pos_c]==0)
+        if (board[pos_l][pos_c]==0 && still_in_board(pos_l,pos_c))
         {
             mark_position(pos_l,pos_c);
             return 1;
@@ -435,7 +435,7 @@ void set_color(int pos_l,int pos_c,int player)//coloration  //v but we should op
 
 int still_in_board(int pos_l,int pos_c)//to check if we hit the boarder     //v
 {
-    if (pos_l>=0 && pos_l<8 && pos_c>=0 && pos_l<8)
+    if (pos_l>=0 && pos_l<8 && pos_c>=0 && pos_c<8)
         return 1;
     return 0; //else
 }
