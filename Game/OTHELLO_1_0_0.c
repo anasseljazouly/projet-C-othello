@@ -4,7 +4,7 @@
 #define WHITE  -1
 #define EMPTY_SPACE 0
 #define HIGHLIGHTER 2
-int TURN=BLACK;
+
                 //0 1 2 3 4 5 6 7
 int board[8][8]={{0,0,0,0,0,0,0,0}, //0
                  {0,0,0,0,0,0,0,0}, //1
@@ -59,35 +59,35 @@ int  contour (int pos_l,int pos_c,int player) //this is the function that highli
         case north://-1 0
            i+=search_player(pos_l,pos_c,-player,player,-1,0);
             break;
-            
+
         case north_east://-1 +1
             i+=search_player(pos_l,pos_c,-player,player,-1,1);
             break;
-            
+
         case north_west://-1 -1
             i+=search_player(pos_l,pos_c,-player,player,-1,-1);
             break;
-            
+
         case east:// 0 +1
             i+=search_player(pos_l,pos_c,-player,player,0,1);
             break;
-            
+
         case west:// 0 -1
             i+=search_player(pos_l,pos_c,-player,player,0,-1);
             break;
-            
+
         case south://+1 0
             i+=search_player(pos_l,pos_c,-player,player,1,0);
             break;
-            
+
         case south_east://+1 +1
             i+=search_player(pos_l,pos_c,-player,player,1,1);
             break;
-            
+
          case south_west://+1 -1
             i+=search_player(pos_l,pos_c,-player,player,1,-1);
             break;
-            
+
         default:
             printf("invalid direction");
             break;
@@ -320,9 +320,13 @@ void reset_h()
 void tell_turn(int player)
 {
     if (player==BLACK)
+    {
         printf("IT'S BLACK'S TURN\n");
         return ;
+    }
     else
+    {
         printf("IT'S WHITE'S TURN\n");
         return ;
+    }
 }
