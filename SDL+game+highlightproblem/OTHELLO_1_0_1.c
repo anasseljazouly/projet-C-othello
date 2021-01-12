@@ -44,6 +44,7 @@ int search_player(int pos_l,int pos_c,int player,int player_origin,int dl,int dc
 void mark_position(int pos_l,int pos_c);//v
 void display();//v
 void display_h();//v
+void who_wins();
 
 int main( int argc, char * argv[] )
 {
@@ -477,4 +478,24 @@ void display_h()                  //v
     }
     printf("\n");
 }
-
+void who_wins()//display who wins in the end
+{
+    int i,j,black_num=0,white_num=0;
+    printf("GAME OVER");
+    for (i=0;i<8;i++)
+    {
+        for(j=0;j<8;j++)
+        {
+            if (board[i][j]==BLACK)
+                black_num++;
+            else
+                white_num++;
+        }
+    }
+    if (black_num<white_num)
+        printf("WHITE WINS");
+    else if (black_num>white_num)
+        printf("BLACK WINS");
+    else
+        printf("DRAW");
+}
