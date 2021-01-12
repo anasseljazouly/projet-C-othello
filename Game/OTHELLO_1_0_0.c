@@ -15,7 +15,7 @@ int board[8][8]={{0,0,0,0,0,0,0,0}, //0
                  {0,0,0,0,0,0,0,0}, //6
                  {0,0,0,0,0,0,0,0}};//7*/
 int highlight_board[8][8]={0};
-typedef enum{
+enum{
         //<=                                 //=>
         north_west=1,  north=2,     north_east=3,
         west=0,         /*O*/          east=4,
