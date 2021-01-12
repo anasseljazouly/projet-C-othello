@@ -61,7 +61,7 @@ int main( int argc, char * argv[] )
     putpion(window);
 
     //first player
-    int last_turn=WHITE;
+    int last_turn=BLACK;
     last_turn=player_turn(last_turn);
     int click_l=-1;
     int click_c=-1;
