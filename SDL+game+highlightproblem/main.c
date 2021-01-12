@@ -255,7 +255,9 @@ int player_turn(int last_turn)//give who's player turn based on the last_turn wi
             }
     if (board_full!=64)
         return last_turn;//if there 's not a possible move if should bounce back the turn to the last player
-    return 0;
+    if (board_full!=64)
+        who_wins();
+        return 0;
 }
 
 
