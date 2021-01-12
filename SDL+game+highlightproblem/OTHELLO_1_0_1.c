@@ -63,6 +63,8 @@ int main( int argc, char * argv[] )
     //first player
     int last_turn=WHITE;
     last_turn=player_turn(last_turn);
+    int click_l=-1;
+    int click_c=-1;
     //board+indices
     display();
     display_h();
@@ -79,8 +81,6 @@ int main( int argc, char * argv[] )
             switch(event.type)
             {
                 case SDL_MOUSEBUTTONDOWN:
-                    ;int click_l=-1;
-                    int click_c=-1;
                         coordonne_click(&click_l,&click_c,coordonnes_case,event);
                        if (highlight_board[click_l][click_c]==HIGHLIGHTER)  // valide move
                         {
@@ -256,9 +256,10 @@ int player_turn(int last_turn)//give who's player turn based on the last_turn wi
             }
     if (board_full!=64)
         return last_turn;//if there 's not a possible move if should bounce back the turn to the last player
-    if (board_full!=64)
+    if (board_full==64){
         who_wins();
-        return 0;
+        exit(0);
+    }
 }
 
 
@@ -456,7 +457,7 @@ void display()                  //v
     {
         for (j=0;j<8;j++)
         {
-            printf("  %d  ",board[i][j]);
+            printf("   %d   ",board[i][j]);
         }
         printf("\n");
     }
@@ -472,7 +473,7 @@ void display_h()                  //v
     {
         for (j=0;j<8;j++)
         {
-            printf("  %d  ",highlight_board[i][j]);
+            printf("   %d   ",highlight_board[i][j]);
         }
         printf("\n");
     }
@@ -481,7 +482,7 @@ void display_h()                  //v
 void who_wins()//display who wins in the end
 {
     int i,j,black_num=0,white_num=0;
-    printf("GAME OVER");
+    printf("GAME OVER\n");
     for (i=0;i<8;i++)
     {
         for(j=0;j<8;j++)
@@ -493,9 +494,10 @@ void who_wins()//display who wins in the end
         }
     }
     if (black_num<white_num)
-        printf("WHITE WINS");
+        printf("WHITE WINS\n");
     else if (black_num>white_num)
-        printf("BLACK WINS");
+        printf("BLACK WINS\n");
     else
-        printf("DRAW");
+        printf("DRAW\n");
+    printf("\nWHITE :%d\nBLACK :%d\n",white_num,black_num);
 }
