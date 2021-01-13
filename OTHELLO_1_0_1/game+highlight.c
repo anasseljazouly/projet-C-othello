@@ -444,12 +444,11 @@ void set_color(int pos_l,int pos_c,int player)//coloration  //v but we should op
             while(board[pos_l+dl][pos_c+dc]==-player && still_in_board(pos_l+dl,pos_c+dc))
             {
                 pos_l+=dl;pos_c+=dc;
-                board[pos_l][pos_c]*=-1;
                 check+=1;
             }
 
 
-            if (!still_in_board(pos_l+dl,pos_c+dc) || ( check && board[pos_l+dl][pos_c+dc]==0 ))
+            if (!still_in_board(pos_l+dl,pos_c+dc) || !( check && board[pos_l+dl][pos_c+dc]==0 ))
             {
 
                 for (;check>0;check--,pos_l-=dl,pos_c-=dc)
