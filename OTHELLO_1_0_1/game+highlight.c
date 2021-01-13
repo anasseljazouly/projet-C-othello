@@ -381,13 +381,10 @@ void click_at(int player,int click_l,int click_c)//it takes a player and demands
       }
     unsigned int check=1;
     tell_turn(player);
-    printf("where do you want to move tape : line , collone");
     display();
     display_h();
     do
     {
-
-        scanf("%d%d",&click_l,&click_c);fflush(stdin);
         if (highlight_board[click_l][click_c]==HIGHLIGHTER)  // valide move
         {
             set_color(click_l,click_c,-player);
