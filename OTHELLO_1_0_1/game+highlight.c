@@ -344,50 +344,57 @@ int  contour (int pos_l,int pos_c,int player) //this is the function that highli
     }
     return i;
 }
-
-int search_player(int pos_l,int pos_c,int opponent,int player,int dl,int dc)      //for the highlight return the highlight    //v
+//--------------------------------------------------------------------------------------------------
+//this function serve two purposes
+//      1.check if in a giving direction contains the opponent if so we move to the second purpose
+//      2.search for an empty_space and highlight it via mark_position()
+//--------------------------------------------------------------------------------------------------
+int search_player(int pos_l,int pos_c,int opponent,int player,int dl,int dc)      
 {
     if (opponent==1 || opponent==-1)
     {
         if (still_in_board(pos_l+dl,pos_c+dc) && board[pos_l+dl][pos_c+dc]==opponent)
             {
-                search_player(pos_l+dl,pos_c+dc,EMPTY_SPACE,player,dl,dc);//cotour 0
+                search_player(pos_l+dl,pos_c+dc,EMPTY_SPACE,player,dl,dc);    //search for an EMPTY_SPACE
             }
             }
-    else if (opponent==0)//to search for a zero we stop when we find a zero when we aren't in the board anymore or when we found the player color
+    else if (opponent==EMPTY_SPACE)               //to search for a zero we stop when we find a EMPTY_SPACE when we aren't in the board anymore or when we found the player color
     {
         while(still_in_board(pos_l,pos_c) && board[pos_l][pos_c]!=0 && board[pos_l][pos_c]!=player)
         {
-            pos_l+=dl;pos_c+=dc;//next case
+            pos_l+=dl;pos_c+=dc;                 //move in a direction from the origin which is pos_l,pos_c
         }
         if (board[pos_l][pos_c]==0 && still_in_board(pos_l,pos_c))
         {
             mark_position(pos_l,pos_c);
-            return 1;
+            return 1;                            //return 1 if we highlighted a given case 
         }
         else
-            return 0;
+            return 0;                            //return 0 if we didn't highlighted any case 
     }
     else{
         printf("non valid player");
         return 0;}
 }
-
-void click_at(int player,int click_l,int click_c)//it takes a player and demands to the user to enter a valid case where he want to move the board should be highlighted
-{                        //and makes the move
+//--------------------------------------------------------------------------------------------------
+//it takes a player and demands to the user to enter a valid case where he want to move ,the board should be highlighted
+//and makes the move
+//--------------------------------------------------------------------------------------------------
+void click_at(int player,int click_l,int click_c)
+{                        
     if (player==0)
       {
           return ;
       }
     unsigned int check=1;
-    tell_turn(player);
+    tell_turn(player);    //tell who should play 
     display();
     display_h();
     do
     {
         if (highlight_board[click_l][click_c]==HIGHLIGHTER)  // valide move
         {
-            set_color(click_l,click_c,-player);
+            set_color(click_l,click_c,-player);     //make the move 
             check=0;
         }
         else
@@ -395,10 +402,11 @@ void click_at(int player,int click_l,int click_c)//it takes a player and demands
             printf("unvalide move try again based on the highlight\n");
         }
     reset_h();
-    }while(check);
-
+    }while(check);    //we loop over that until the current player gives a valide move
 }
-
+//--------------------------------------------------------------------------------------------------
+//tell who's should play on that turn
+//--------------------------------------------------------------------------------------------------
 void tell_turn(int player)
 {
     if (player==BLACK)
@@ -412,7 +420,9 @@ void tell_turn(int player)
         return ;
     }
 }
-
+//--------------------------------------------------------------------------------------------------
+//reset highlighted board to zeros
+//--------------------------------------------------------------------------------------------------
 void reset_h()
 {
     int i,j;
@@ -426,8 +436,12 @@ void reset_h()
         printf("\n");
     }
 }
-
-void set_color(int pos_l,int pos_c,int player)//coloration  //v but we should optimize it more
+//--------------------------------------------------------------------------------------------------
+//we give the coordonate of a given case and we change it's color :
+//        we first check it's surrounding without leaving the board 
+//        we keep searching in a given direction and make changes 
+//--------------------------------------------------------------------------------------------------
+void set_color(int pos_l,int pos_c,int player)//coloration  
 {
     board[pos_l][pos_c]=player;
     int dl,dc,pos_l_b=pos_l,pos_c_b=pos_c;
@@ -436,48 +450,48 @@ void set_color(int pos_l,int pos_c,int player)//coloration  //v but we should op
     {
         for(dc=-1;dc<2;dc++)
         {
-            if((dc==0 && dl==0) || !still_in_board(pos_l+dl,pos_c+dc))
+            if((dc==0 && dl==0) || !still_in_board(pos_l+dl,pos_c+dc))    //dc=0 and dl=0 is the case itself ,if we left the board :skip both of them 
             {
                 continue;
             }
-
-            while(board[pos_l+dl][pos_c+dc]==-player && still_in_board(pos_l+dl,pos_c+dc))
+            while(board[pos_l+dl][pos_c+dc]==-player && still_in_board(pos_l+dl,pos_c+dc))  //searching for a color who doesn't match the player we stop there 
             {
                 pos_l+=dl;pos_c+=dc;
                 check+=1;
             }
-
-
-            if (!still_in_board(pos_l+dl,pos_c+dc) || !( check && board[pos_l+dl][pos_c+dc]==0 ))
+            if (!still_in_board(pos_l+dl,pos_c+dc) || !( check && board[pos_l+dl][pos_c+dc]==EMPTY_SPACE)) //we color all the cases here if we at least found a variation between the two colors ,via check variable 
             {
-
                 for (;check>0;check--,pos_l-=dl,pos_c-=dc)
                 {
-                    board[pos_l][pos_c]*=-1;
-
+                    board[pos_l][pos_c]*=-1;    // to color it by the oposite of what it contained
                 }
-
             }
             check=0;
             pos_l=pos_l_b;pos_c=pos_c_b;
         }
-
     }
 }
-
+//--------------------------------------------------------------------------------------------------
+//Check if we aren't outside the board
+/--------------------------------------------------------------------------------------------------
 int still_in_board(int pos_l,int pos_c)//to check if we hit the boarder     //v
 {
     if (pos_l>=0 && pos_l<8 && pos_c>=0 && pos_c<8)
         return 1;
     return 0; //else
 }
-
-void mark_position(int pos_l,int pos_c)         //v
+//--------------------------------------------------------------------------------------------------
+//set a case in the highlighting board to highlighted
+//--------------------------------------------------------------------------------------------------
+void mark_position(int pos_l,int pos_c)         
 {
     highlight_board[pos_l][pos_c]=HIGHLIGHTER;
 }
 
-void display()                  //v
+//--------------------------------------------------------------------------------------------------
+//display Game board
+//--------------------------------------------------------------------------------------------------
+void display()                  
 {
     int i,j;
     printf("\ngame board\n");
@@ -491,6 +505,8 @@ void display()                  //v
     }
     printf("\n");
 }
+//--------------------------------------------------------------------------------------------------
+//display highlighted board
 //--------------------------------------------------------------------------------------------------
 void display_h()                  //v
 {
@@ -507,7 +523,10 @@ void display_h()                  //v
     }
     printf("\n");
 }
-void who_wins()//display who wins in the end
+//--------------------------------------------------------------------------------------------------
+//display who wins in the end
+//--------------------------------------------------------------------------------------------------
+void who_wins()                     
 {
     int i,j,black_num=0,white_num=0;
     printf("GAME OVER\n");
