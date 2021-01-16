@@ -48,20 +48,8 @@ void free_ptr(board_miroir *cancel_boards)          //if the player played while
 void move_forward(int autorized)
 {
     int i,j;
-    for(i=0;i<8;i++)
-    {
-        for(j=0;j<8;j++)
-        {
-            board[i][j]=cancel_boards->board_m[i][j];
-        }
-    }
     if(cancel_boards->next)
         cancel_boards=cancel_boards->next;
-}
-
-void move_backward(int autorized)
-{
-    int i,j;
     for(i=0;i<8;i++)
     {
         for(j=0;j<8;j++)
@@ -70,8 +58,22 @@ void move_backward(int autorized)
         }
     }
     
+}
+
+void move_backward(int autorized)
+{
+    int i,j;
     if(cancel_boards->previous)
         cancel_boards=cancel_boards->previous;
+    for(i=0;i<8;i++)
+    {
+        for(j=0;j<8;j++)
+        {
+            board[i][j]=cancel_boards->board_m[i][j];
+        }
+    }
+    
+    
 }
 
 void display()                //just to visualize things
