@@ -54,7 +54,6 @@ int if_click_next(SDL_Event event);
 /*****************************************************c****************************/
 int player_turn(int last_turn);//v
 int contour (int pos_l,int pos_c,int player);//v
-void click_at(int player,int click_l,int click_c);//v
 void tell_turn(int player);//v
 void reset_h();//v
 void set_color(int pos_l,int pos_c,int player);//v
