@@ -11,7 +11,7 @@ typedef struct _board_miroir
 }board_miroir;
 
 //structure explanation
-/*        NULL<=>|p-B-n|<=>|p-B-n|<=>....<=>|p-B-n|<=>NULL          */
+/*        NULL<=|p-B-n|<=>|p-B-n|<=>....<=>|p-B-n|=>NULL          */
 //we should just try out the algorithm and validate it 
 board_miroir *cancel_boards=NULL;
 
@@ -38,10 +38,10 @@ void update_cancel_board(board_miroir **ptr_cancel_boards)      //we should use 
 
 void free_ptr(board_miroir *cancel_boards)          //if the player played while he got back 
 {
-    if (cancel_boards->previous==NULL)
+    if (cancel_boards->next==NULL)
         return;
     else
-        free_ptr(cancel_boards->previous);
+        free_ptr(cancel_boards->next);
     free(cancel_boards);
 }
 
