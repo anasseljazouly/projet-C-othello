@@ -20,8 +20,8 @@ void update_cancel_board(board_miroir **ptr_cancel_boards)      //we should use 
 {
     int i,j;
     board_miroir *new_board=Malloc(board_miroir);
-    new_board->next=(*ptr_cancel_boards);
-    new_board->previous=NULL;
+    new_board->next=NULL;
+    new_board->previous=(*ptr_cancel_boards);
     for(i=0;i<8;i++)
     {
         for(j=0;j<8;j++)
@@ -30,7 +30,7 @@ void update_cancel_board(board_miroir **ptr_cancel_boards)      //we should use 
 
         }
     }
-    (*ptr_cancel_boards)->previous=new_board;
+    (*ptr_cancel_boards)->next=new_board;
     (*ptr_cancel_boards)=new_board;
     free(new_board);
 
