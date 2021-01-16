@@ -42,7 +42,7 @@ void free_ptr(board_miroir *cancel_boards)          //if the player played while
         return;
     else
         free_ptr(cancel_boards->next);
-    free(cancel_boards);
+    free(cancel_boards->next);
 }
 
 void move_backward(int autorized)
