@@ -48,8 +48,8 @@ void initialisation_des_coordonnes(SDL_Rect coordonnes_case[8][8]);
 void coordonne_click(int *ligne,int *colonne,SDL_Rect coordonnes_case[8][8],SDL_Event event);
 int if_click_replay(SDL_Event event);
 void restart_game();
-int if_click_back();
-int if_click_next();
+int if_click_back(SDL_Event event);
+int if_click_next(SDL_Event event);
 
 /*****************************************************c****************************/
 int player_turn(int last_turn);//v
@@ -82,15 +82,13 @@ int main( int argc, char * argv[] )
     //click restart
     int onrestart=-1;//out of restart
 
-    //bord initial
-    putpion(window);
-
     //indice etat :
     int hint_etat=-1;//off
 
     //list of boards
     board_list *list_boards;
     list_boards=Malloc(board_list);
+    board_list *to_free=list_boards;
 
     //first player
     int last_turn=BLACK;
@@ -113,7 +111,6 @@ int main( int argc, char * argv[] )
 
     while(programme)
     {
-
 
         SDL_Event event;
         while(SDL_PollEvent(&event))
@@ -164,27 +161,28 @@ int main( int argc, char * argv[] )
                        if (highlight_board[click_l][click_c]==HIGHLIGHTER && hint_etat==-1)  // valide move+hint off
                         {
                             free_ptr(&list_boards);
-                        set_color(click_l,click_c,-last_turn);
-                        update_list_board(&list_boards,last_turn);
-                        reset_h();
-                        printf("%d",last_turn);
-                        last_turn=player_turn(last_turn);
-                        putpion(window);
-                        display();
-                        display_h();
+                            set_color(click_l,click_c,-last_turn);
+                            update_list_board(&list_boards,last_turn);
+                            reset_h();
+                            printf("%d",last_turn);
+                            last_turn=player_turn(last_turn);
+                            putpion(window);
+                            display();
+                            display_h();
                         }
 
                         if (highlight_board[click_l][click_c]==HIGHLIGHTER && hint_etat==1)  // valide move+hint on
                         {
                             free_ptr(&list_boards);
-                        set_color(click_l,click_c,-last_turn);
-                        update_list_board(&list_boards,last_turn);
-                        reset_h();
-                        printf("%d",last_turn);
-                        last_turn=player_turn(last_turn);
-                        putpion_with_hint(window);
-                        display();
-                        display_h();
+                            set_color(click_l,click_c,-last_turn);
+                            update_list_board(&list_boards,last_turn);
+                            int i,j;
+                            reset_h();
+                            printf("%d",last_turn);
+                            last_turn=player_turn(last_turn);
+                            putpion_with_hint(window);
+                            display();
+                            display_h();
                         }
 
                         if(last_turn==0)
@@ -199,7 +197,7 @@ int main( int argc, char * argv[] )
                             restart_game();
                             last_turn=BLACK;
                             printf("%d",last_turn);
-                            free(list_boards);
+                            //free(to_free);
                             list_boards=Malloc(board_list);
                             list_boards->_last_turn=last_turn;
                             list_boards->previous=NULL;
@@ -222,7 +220,7 @@ int main( int argc, char * argv[] )
 
         }
     }
-
+    free(to_free);
     SDL_DestroyWindow(window);
     SDL_Quit();
     return EXIT_SUCCESS;
@@ -541,16 +539,19 @@ void coordonne_click(int *ligne,int *colonne,SDL_Rect coordonnes_case[8][8],SDL_
 /***********************************************C****************************************/
 int player_turn(int last_turn)//give who's player turn based on the last_turn with highlighting //v
 {
-    int k=0,i,j,highlight_full=0,board_vide=0;
-
+    int k=0,i,j,highlight_full=0,black_num=0,white_num=0,board_total=0;
     for (i=0;i<8;i++)
     {
         for(j=0;j<8;j++)
         {
             k+=contour(i,j,last_turn);//this is the instruction that highlight
-            if(board[i][j]==0)
+            if(board[i][j]==1)
             {
-                board_vide++;
+                black_num++;
+            }
+            if(board[i][j]==-1)
+            {
+                white_num++;
             }
         }
     }
@@ -564,7 +565,8 @@ int player_turn(int last_turn)//give who's player turn based on the last_turn wi
             }
         }
     }
-    if(board_vide==0)
+    board_total=black_num+white_num;
+    if(board_total==64)
     {
         return 0;
     }
@@ -572,10 +574,12 @@ int player_turn(int last_turn)//give who's player turn based on the last_turn wi
     {
         return -last_turn;//if there is a possible case
     }
-    if(highlight_full==0)//no possible case
+    if(highlight_full==0 && black_num!=0 && white_num!=0)//no possible case
     {
         player_turn(-last_turn);
     }
+    if(black_num==0 || white_num==0)
+    {return 0;}
 }
 
 
@@ -657,34 +661,6 @@ int search_player(int pos_l,int pos_c,int opponent,int player,int dl,int dc)    
         return 0;}
 }
 
-void click_at(int player,int click_l,int click_c)//it takes a player and demands to the user to enter a valid case where he want to move the board should be highlighted
-{                        //and makes the move
-    if (player==0)
-      {
-          return ;
-      }
-    unsigned int check=1;
-    tell_turn(player);
-    printf("where do you want to move tape : line , collone");
-    display();
-    display_h();
-    do
-    {
-
-        scanf("%d%d",&click_l,&click_c);fflush(stdin);
-        if (highlight_board[click_l][click_c]==HIGHLIGHTER)  // valide move
-        {
-            set_color(click_l,click_c,-player);
-            check=0;
-        }
-        else
-        {
-            printf("unvalide move try again based on the highlight\n");
-        }
-    reset_h();
-    }while(check);
-
-}
 
 void tell_turn(int player)
 {
@@ -805,7 +781,7 @@ void who_wins()//display who wins in the end
         {
             if (board[i][j]==BLACK)
                 black_num++;
-            else
+            if(board[i][j]==WHITE)
                 white_num++;
         }
     }
@@ -835,7 +811,6 @@ void update_list_board(board_list **ptr_list_boards,int last_turn)      //we sho
     }
     (*ptr_list_boards)->next=new_board;
     (*ptr_list_boards)=new_board;
-    free(new_board);
 }
 
 void free_ptr(board_list **ptr_list_boards)          //if the player played while he got back
@@ -844,7 +819,7 @@ void free_ptr(board_list **ptr_list_boards)          //if the player played whil
         {return;}
     else
        {
-           free((*ptr_list_boards)->next);
+           free((*ptr_list_boards)->next);return;
        }
 
 }
@@ -854,7 +829,9 @@ void move_backward(board_list **ptr_list_boards,int last_turn)
     if((*ptr_list_boards)->previous !=NULL)
     {
         (*ptr_list_boards)=(*ptr_list_boards)->previous;
+        int i,j;
         memcpy(board,(*ptr_list_boards)->board_m,sizeof(int)*8*8);
+        display();
         last_turn=(*ptr_list_boards)->_last_turn;
     }
 }
