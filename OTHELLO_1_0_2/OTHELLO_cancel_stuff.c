@@ -45,7 +45,7 @@ void free_ptr(board_miroir *cancel_boards)          //if the player played while
     free(cancel_boards->next);
 }
 
-void move_backward(int autorized)
+void move_forward(int autorized)
 {
     int i,j;
     for(i=0;i<8;i++)
@@ -59,7 +59,7 @@ void move_backward(int autorized)
         cancel_boards=cancel_boards->next;
 }
 
-void move_forward(int autorized)
+void move_backward(int autorized)
 {
     int i,j;
     for(i=0;i<8;i++)
