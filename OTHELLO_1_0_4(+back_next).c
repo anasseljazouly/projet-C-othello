@@ -236,7 +236,7 @@ void fondgame(SDL_Renderer *renderer)
     fond_rect.h=hauteur;
 
 
-    SDL_Surface *fond=SDL_LoadBMP("picture/fond.bmp");
+    SDL_Surface *fond=SDL_LoadBMP("pictures/fond.bmp");
     SDL_Texture *texture=SDL_CreateTextureFromSurface(renderer,fond);
     SDL_FreeSurface(fond);
     SDL_RenderCopy(renderer,texture,NULL,&fond_rect);
@@ -248,7 +248,7 @@ void fondgame(SDL_Renderer *renderer)
     board_rect.w = 400;
     board_rect.h = 400;
 
-    SDL_Surface *fond_board =SDL_LoadBMP("picture/fondboard.bmp");
+    SDL_Surface *fond_board =SDL_LoadBMP("pictures/fondboard.bmp");
     texture=SDL_CreateTextureFromSurface(renderer,fond_board);
     SDL_FreeSurface(fond_board);
     SDL_RenderCopy(renderer,texture,NULL,&board_rect);
@@ -261,7 +261,7 @@ void fondgame(SDL_Renderer *renderer)
     rect_click_restart.h=50;
 
     SDL_Surface *click_restart;
-        click_restart=SDL_LoadBMP("picture/restart.bmp");
+        click_restart=SDL_LoadBMP("pictures/restart.bmp");
         texture=SDL_CreateTextureFromSurface(renderer,click_restart);
         SDL_FreeSurface(click_restart);
         SDL_RenderCopy(renderer,texture,NULL,&rect_click_restart);
@@ -274,7 +274,7 @@ void fondgame(SDL_Renderer *renderer)
     rect_click_back.h=50;
 
     SDL_Surface *click_back;
-        click_back=SDL_LoadBMP("picture/back.bmp");
+        click_back=SDL_LoadBMP("pictures/back.bmp");
         texture=SDL_CreateTextureFromSurface(renderer,click_back);
         SDL_FreeSurface(click_back);
         SDL_RenderCopy(renderer,texture,NULL,&rect_click_back);
@@ -287,7 +287,7 @@ void fondgame(SDL_Renderer *renderer)
     rect_click_next.h=50;
 
     SDL_Surface *click_next;
-        click_next=SDL_LoadBMP("picture/next.bmp");
+        click_next=SDL_LoadBMP("pictures/next.bmp");
         texture=SDL_CreateTextureFromSurface(renderer,click_next);
         SDL_FreeSurface(click_next);
         SDL_RenderCopy(renderer,texture,NULL,&rect_click_next);
@@ -312,8 +312,8 @@ void putpion_with_hint(SDL_Window *window)
 
     //pions
     SDL_Rect rect_black,rect_white;
-    SDL_Surface *pion_black=SDL_LoadBMP("picture/black.bmp");
-    SDL_Surface *pion_white=SDL_LoadBMP("picture/white.bmp");
+    SDL_Surface *pion_black=SDL_LoadBMP("pictures/black.bmp");
+    SDL_Surface *pion_white=SDL_LoadBMP("pictures/white.bmp");
 
     //hint
     SDL_Rect rect_hint;
@@ -326,7 +326,7 @@ void putpion_with_hint(SDL_Window *window)
     rect_click_hint.w=100;
     rect_click_hint.h=200;
 
-    SDL_Surface *click_hint=SDL_LoadBMP("picture/indiceon.bmp");
+    SDL_Surface *click_hint=SDL_LoadBMP("pictures/indiceon.bmp");
     texture=SDL_CreateTextureFromSurface(renderer,click_hint);
     SDL_FreeSurface(click_hint);
     SDL_RenderCopy(renderer,texture,NULL,&rect_click_hint);
@@ -395,8 +395,8 @@ void putpion(SDL_Window *window)
 
     //pions
     SDL_Rect rect_black,rect_white;
-    SDL_Surface *pion_black=SDL_LoadBMP("picture/black.bmp");
-    SDL_Surface *pion_white=SDL_LoadBMP("picture/white.bmp");
+    SDL_Surface *pion_black=SDL_LoadBMP("pictures/black.bmp");
+    SDL_Surface *pion_white=SDL_LoadBMP("pictures/white.bmp");
 
     //click hint
     SDL_Rect rect_click_hint;
@@ -405,7 +405,7 @@ void putpion(SDL_Window *window)
     rect_click_hint.w=100;
     rect_click_hint.h=200;
 
-    SDL_Surface *click_hint=SDL_LoadBMP("picture/indiceoff.bmp");
+    SDL_Surface *click_hint=SDL_LoadBMP("pictures/indiceoff.bmp");
     texture=SDL_CreateTextureFromSurface(renderer,click_hint);
     SDL_FreeSurface(click_hint);
     SDL_RenderCopy(renderer,texture,NULL,&rect_click_hint);
