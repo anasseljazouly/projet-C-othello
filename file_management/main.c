@@ -27,7 +27,4 @@ void sauvegarde(user user_x,int player ,board_list *cancel_boards)
     }
     fclose(save_file);
 }
-int main()
-{
 
-}
