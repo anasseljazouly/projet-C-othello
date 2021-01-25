@@ -105,10 +105,10 @@ user menu_register()
     
 }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////7
-int sauvegarde(int *last_turn )
+int sauvegarde(int *last_turn,char * opening_mode="wb")
 {
     char * extension=".bin";
-    char * opening_mode="wb";
+    
     char * path;
     char name_game[20];
     FILE* file=NULL;
@@ -154,10 +154,10 @@ int sauvegarde(int *last_turn )
     return 0;
 }
  ////////////////////////////////////////////////////////////////////////////////////////////////////////////777
-int reload(int * last_turn)
+int reload(int * last_turn,char * opening_mode)
 {
     char * extension=".bin";
-    char * opening_mode="rb";
+    
     char * path;
     char name_game[20];
     FILE* file=NULL;
@@ -203,6 +203,48 @@ int reload(int * last_turn)
     /* Fermeture du fichier : */
     fclose(file);
     return 0;
+}
+//////////////////////////////////////////////////////////////////////////////////////////////
+int registerx(char *path,char *name_p,char *password,char *mode)//games_mode_name
+{
+    //creat folder
+    printf("\nhi");
+    path=malloc(sizeof(path)+sizeof(mode)+sizeof(name_p)+1);printf("\nhi");
+    strcpy(path,"games");
+    strcat(path,"/");printf("\%s",path);
+    strcat(path,mode);
+    strcat(path,"/");
+
+    char user_path[100];
+    strcpy(user_path,path);
+
+    strcat(path,name_p);
+    printf("hi");
+    if(!creat_folder(path))
+    {
+        printf("name already exist try another name");
+        return 0;
+    }
+
+    //folder created
+    strcat(user_path,"users.txt");
+    FILE *file;
+    file=fopen(user_path,"a");
+
+    //open the user file
+    if (file==NULL)
+    {
+        printf("could,t open the file ");
+        return 0;
+    }
+
+    //append the name and the password
+    fprintf(file,name_p);
+    fprintf(file,"\n");
+    fprintf(file,password);
+    fclose(file);
+    return 1;
+
 }
 
 
