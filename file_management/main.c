@@ -8,7 +8,7 @@
 typedef struct _user
 {
     char name[20];
-    char name_oponent[20];
+    char password[20];
 }user;
 
 typedef struct _board_list
@@ -42,52 +42,90 @@ int board2[8][8]={{0,0,0,0,0,0,0,0}, //0
 //prototype 
 
 void creat_folder(char *dirname);
-int sauvegarde(user user_x,board_list *list_boards);
-int reload(user user_x,board_list *list_boards);
+int sauvegarde(int *last_turn);
+int reload(int *last_turn);
 
-
-int main()
+void register(char *name,char *password)
 {
-    //just for testing
-    board_list *list_boards=Malloc(board_list);
-    int last_turn=1;
-
-    list_boards->_last_turn=last_turn;
-    list_boards->previous=NULL;
-    list_boards->next=NULL;
-    memcpy(list_boards->board_m,board,sizeof(int)*8*8);
-
-    list_boards->previous=Malloc(board_list);
-
-    list_boards->_last_turn=-last_turn;
-    list_boards->previous->previous=NULL;
-    list_boards->previous->next=list_boards->previous;
-    memcpy(list_boards->previous->board_m,board2,sizeof(int)*8*8);
-
-    user user_x;//=(user *)malloc(sizeof(user));
-    strcpy(user_x.name,"test");
-
-    printf("\n%d",sauvegarde(user_x,list_boards));
-    printf("\n%d",reload(user_x,list_boards));
+    
 }
+void sign_in(char *name,char *password)
+{
+    
+}
+user menu_register()
+{
+    user user_x;
+    printf("do you want to sign in or to register");
+    //click at register or sign in : it's name is click
+    switch(click)
+    {
+        case ://register
+            printf("entrer your name ");
+            do{
+            fscanf(stdin,"%s",user_x.name);
+            if (!creat_folder(user_x.name))
+            {
+                printf("name already exist,entrer a new name :");
+                continue ;//show him a picture of the erreur
+            }
+             break;
+            }while(1);
+            printf("entrer a password ");
+            fscanf(stdin,"%s",user_x.password);
+            break;
+        case ://sign in
+            FILE *file;
+            char *path=(char *)malloc(100*sizeof(char));
+            printf("entrer your name ");
+            do{
+            fscanf(stdin,"%s",user_x.name);
+            strcpy(path,user_x.name);
+            strcat(path,"/");
+            strcpy(path,user_x.name);
+            strcat(path,extension);
+            file=fopen(path,"rb");
+            if (file==NULL)
+            {
+                printf("name don't exist,entrer an existing name :");//show him a picture of the erreur
+                continue ;
+            }
+             fread();
+             break;
+            }while(1);
+            
+            printf("entrer a password ");
+            fscanf(stdin,"%s",user_x.password);
+            break;
+            
 
-int sauvegarde(user user_x,board_list *list_boards)
+
+            
+    }
+    
+}
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////7
+int sauvegarde(int *last_turn )
 {
     char * extension=".bin";
     char * opening_mode="wb";
     char * path;
+    char name_game[20];
     FILE* file=NULL;
+    
+    printf("entrer un nom pour la partie");        
+    path=(char *)malloc(strlen(name_game)+strlen(extension)+1);
+    
+    do{
+        scanf("%s",name_game);
+        strcpy(path,name_game);
+        strcat(path,extension);
 
-    path=(char *)malloc(strlen(user_x.name)+strlen(extension)+1);
-    strcpy(path,user_x.name);
-    strcat(path,extension);
-    printf("%s",path);
-
-    if (!fopen(path,"rb"))
-    {
-        printf("file already exist it will be deleated");//we can make something else
-        remove(path);                        //delete the file
-    }
+        if (!fopen(path,"rb"))
+        {
+            printf("nom existe deja : entrer un nouveau nom pour la partie :");
+        }
+       }while(1);
 
     file=fopen(path,opening_mode);
     if(file==NULL)
@@ -97,43 +135,49 @@ int sauvegarde(user user_x,board_list *list_boards)
     }
 
 
-    while(list_boards)//writing patern player-board in loop
-    {
-        if (!fwrite(&list_boards->_last_turn,1,sizeof(int),file))
+   if (!fwrite(last_turn,1,sizeof(int),file))
             {
                 printf("\n writing unsuccessful : player");
                 return -1;
+                fclose(file);
             }
-
-        if (!fwrite(&list_boards->board_m,1,sizeof(int)*SIZE_OF_BOARD,file))
+    if (!fwrite(board_m,1,sizeof(int)*SIZE_OF_BOARD,file))
             {
                 printf("\nwriting unsuccessful : board ");
                 return -1;
+                fclose(file);
             }
         
-        list_boards=list_boards->previous ;
-
-    }
+        
+    /* Fermeture du fichier : */
     fclose(file);
     return 0;
 }
-int reload(user user_x,board_list *list_boards)
+ ////////////////////////////////////////////////////////////////////////////////////////////////////////////777
+int reload(int * last_turn)
 {
     char * extension=".bin";
     char * opening_mode="rb";
     char * path;
-    board_list *nex=NULL;
-    int recover;
+    char name_game[20];
     FILE* file=NULL;
 
+    printf("entrer un nom pour la partie");        
+    path=(char *)malloc(strlen(name_game)+strlen(extension)+1);
+    
+    do{
+        scanf("%s",name_game);
+        strcpy(path,name_game);
+        strcat(path,extension);
 
-    int  nb_val_lues = SIZE_OF_BOARD ;
-
-    path=(char *)malloc(strlen(user_x.name)+strlen(extension)+1);
-    strcpy(path,user_x.name);
-    strcat(path,extension);
-    printf("\n%s",path);
-
+        if (fopen(path,"rb"))
+        {
+            printf("nom n'existe pas : entrer un nom pour la partie :");
+            continue;
+        }
+        break;
+       }while(1);
+    
     file=fopen(path,opening_mode);
     if(file==NULL)
     {
@@ -141,51 +185,42 @@ int reload(user user_x,board_list *list_boards)
         return -1;
     }
 
-/////////////////////////////////////////////////////////////////////////////////////////
-    while (!feof(file)) /* vrai tant que fin du fichier non atteinte */
-    {
-
-
-        printf("\nim heere\n");
-        if (!fread(&recover,1,sizeof(int), file))
+    
+    if (!fread(last_turn,1,sizeof(int), file))
         {
-            return -2;
+            printf("\n reading unsuccessful : last turn ");
+            return -1;
+            fclose(file);
         }
-        else
-            {list_boards->_last_turn=recover;
-            printf("\n reading successful : last turn %d",list_boards->_last_turn);
-            }
-        if(!(fread(&list_boards->board_m,1,sizeof(int)*SIZE_OF_BOARD, file)))
-        {
-            printf("\nwriting unsuccessful : board ");
 
+    if (!fread(board,1,SIZE_OF_BOARD*sizeof(int), file))
+        {
+            printf("\n reading unsuccessful : board");
+            return -1;
+            fclose(file);
         }
-        list_boards->next=nex;
-        nex=list_boards;
-        list_boards->previous=NULL;
-        list_boards=list_boards->previous ;
-        list_boards=Malloc(board_list);
-        list_boards->next=nex;
-    }
+       
     /* Fermeture du fichier : */
-
-
+    fclose(file);
     return 0;
 }
 
 
 
-void creat_folder(char *dir_name)
+int creat_folder(char *dir_name)
 {
    int check;
 
    check = mkdir(dir_name);
    //checking if directory is created
    if (!check)
+   {
       printf("Directory created\n");
+      return 1;
+   }     
    else {
       printf("Unable to create directory\n");
-      exit(1);
+      return 0;
    }
 }
 
