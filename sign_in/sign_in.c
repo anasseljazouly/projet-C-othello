@@ -1,30 +1,40 @@
 int key=17;
 
 
+/*
+sign_in: takes just the mode 1vs1 or 1vsia
+it returns 1 if the operation is succesful and 0 of not 
 
-int sign_in(char *path,char *mode)//games_mode_name
+it creats a folder for the user 
+it puts the name and the password in the users.txt file
+
+*/
+
+int sign_in(char *mode)//games_mode_name
 {
     //creat folder
     char password[30];
     char name[20];
-    printf("entrer your name and your password :");
-    fscanf(stdin, "%s %s",name,password);
-
-    path=malloc(sizeof(path)+sizeof(mode)+sizeof(name)+1);
-    strcpy(path,"games");
-    strcat(path,"/");
-    strcat(path,mode);
-    strcat(path,"/");
-
+    char path[100];
     char user_path[100];
+
+    do{
+
+    sprintf(path,"games/%s/",mode);
     strcpy(user_path,path);
+
+    printf("\nentrer your name and your password :");
+    fscanf(stdin,"%s%s",name,password);
 
     strcat(path,name);
     if(!creat_folder(path))
     {
-        printf("name already exist try another name");
-        return 0;
+        printf("\nname already exist try another name");
+        continue;
     }
+    break;
+
+    }while(1);
 
     //folder created
     strcat(user_path,"users.txt");
@@ -44,13 +54,12 @@ int sign_in(char *path,char *mode)//games_mode_name
     fprintf(file,name);
     fprintf(file,"\n");
     fprintf(file,password);
-    fprintf(file,"\n////////////////////////////////////////////////////////\n");
+    fprintf(file,"\n");
 
-    fclose(file);printf("\ndone");
+    fclose(file);
     return 1;
 
 }
-
 
 int decode (char *str,int key)
 {
