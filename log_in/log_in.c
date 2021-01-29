@@ -22,7 +22,7 @@ void log_in(char *path,char *mode)
     file=fopen(user_path,"r");
     int found=0;
 
-    while(!found || EOF)
+    while(!(found || feof(file)))
     {
         char password_u[20];
         char name_u[20];
