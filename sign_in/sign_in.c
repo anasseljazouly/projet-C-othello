@@ -51,6 +51,7 @@ int sign_in(char *path,char *mode)//games_mode_name
 
 }
 
+
 int decode (char *str,int key)
 {
     int i;
@@ -60,6 +61,8 @@ int decode (char *str,int key)
 	}
 	return 0;
 }
+
+
 int code (char *str,int key)
 {
     int i ;
@@ -68,4 +71,22 @@ int code (char *str,int key)
 	    str[i]+=key;
 	}
 	return 0;
+}
+
+
+int creat_folder(char *dir_name)
+{
+   int check;
+
+   check = mkdir(dir_name);
+   //checking if directory is created
+   if (!check)
+   {
+      printf("Directory created\n");
+      return 1;
+   }
+   else {
+      printf("Unable to create directory\n");
+      return 0;
+   }
 }
