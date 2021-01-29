@@ -5,7 +5,8 @@ void save_history (int pos_l,int pos_c,int player,char *player_name,char *game_n
     FILE *file=NULL;
 
     //we get the path 
-    sprintf(path,"games/%s/%s/history-%s.txt",mode,player_name,game_name);
+    sprintf(path,"games/%s/%s/history-%s.txt",mode,player_name,game_name);//why games ? because the main folder which contain the game is named games
+    //we should have a path like :games/1vs1/imad/history-imad&hamza.txt
     
     //open the file
     file=fopen(path,"a");
