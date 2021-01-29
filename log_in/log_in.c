@@ -1,18 +1,26 @@
-void log_in(char *path,char *mode)
+
+/*
+
+log_in: takes just the mode 1vs1 or 1vsia
+it's an infinite loop which we can make it stop using sdl (we should add it later)
+demands to the user the name and the password and search for this combinaison in the users.txt file 
+
+*/
+
+void log_in(char *mode)
 {
     char password[30];
     char name[20];
-    printf("entrer your name and your password :");
-    fscanf(stdin, "%s %s",name,password);
-
-    path=malloc(sizeof(path)+sizeof(mode)+sizeof(name)+1);
-    strcpy(path,"games");
-    strcat(path,"/");
-    strcat(path,mode);
-    strcat(path,"/");
-
+    char path[100];
     char user_path[100];
+
+    do{
+
+    sprintf(path,"games/%s/",mode);
     strcpy(user_path,path);
+
+    printf("\nentrer your name and your password :");
+    fscanf(stdin,"%s%s",name,password);
 
     strcat(path,name);
 
@@ -21,7 +29,7 @@ void log_in(char *path,char *mode)
     FILE *file;
     file=fopen(user_path,"r");
     int found=0;
-
+    int max=0;
     while(!(found || feof(file)))
     {
         char password_u[20];
@@ -39,10 +47,13 @@ void log_in(char *path,char *mode)
     }
     if (found)
     {
-        printf("log in succesfully");
+        printf("log-in succesfully");
+        break;
     }
     else
         printf("username or password incorecte");
+
+    }while(1);
 
 
 }
