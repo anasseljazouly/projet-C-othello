@@ -7,7 +7,7 @@ demands to the user the name and the password and search for this combinaison in
 
 */
 
-void log_in(char *mode)
+void log_in()
 {
     char password[30];
     char name[20];
@@ -16,7 +16,7 @@ void log_in(char *mode)
 
     do{
 
-    sprintf(path,"games/%s/",mode);
+    sprintf(path,"games/");
     strcpy(user_path,path);
 
     printf("\nentrer your name and your password :");
