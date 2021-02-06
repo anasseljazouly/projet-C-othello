@@ -3,9 +3,9 @@ int key=17;
 
 /*
 sign_in: takes just the mode 1vs1 or 1vsia
-it returns 1 if the operation is succesful and 0 of not 
+it returns 1 if the operation is succesful and 0 of not
 
-it creats a folder for the user 
+it creats a folder for the user
 it puts the name and the password in the users.txt file
 
 */
@@ -13,7 +13,7 @@ it puts the name and the password in the users.txt file
 int sign_in(char *mode)//games_mode_name
 {
     //creat folder
-    char password[30];
+    char password[20];
     char name[20];
     char path[100];
     char user_path[100];
