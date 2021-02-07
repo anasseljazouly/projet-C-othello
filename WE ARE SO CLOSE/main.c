@@ -1363,8 +1363,14 @@ int sign_in(SDL_Renderer *renderer)//games_mode_name
             }
         }
     }
-
+    
     creat_folder(path);
+    //for each mode creat a folder
+    char folder_name[100];
+    sprintf(folder_name,"%s/1vs1/",path);
+    creat_folder(folder_name);
+    sprintf(folder_name,"%s/1vsai/",path);
+    creat_folder(folder_name);
 
     //folder created
     strcat(user_path,"users.txt");
