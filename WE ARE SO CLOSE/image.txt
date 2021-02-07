@@ -1,0 +1,87 @@
+
+#include <stdlib.h>
+#include <stdio.h>
+#include <SDL.h>
+
+void SDL_ExitwithError(const char* message);
+
+int main( int argc, char * argv[] )
+{
+    SDL_Window* window=NULL;SDL_Renderer *renderer=NULL;
+    //initialisation
+    if (SDL_Init(SDL_INIT_VIDEO)!=0)
+    {
+        SDL_ExitwithError("initialisation du sdl");
+    }
+    //window
+    window=SDL_CreateWindow("page1",SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED,800,600,0);
+    if(window==NULL)
+    {
+        SDL_ExitwithError("creation de fenetre");
+    }
+    //render
+    renderer=SDL_CreateRenderer(window,-1,SDL_RENDERER_SOFTWARE);
+    if(renderer==NULL)
+    {
+        SDL_ExitwithError("creation de rendu");
+    }
+
+    //image
+    SDL_Surface *image=NULL;
+    image = SDL_LoadBMP("image2.bmp");
+    if (image==NULL)
+    {
+         SDL_DestroyRenderer(renderer);
+        SDL_DestroyWindow(window);
+        SDL_ExitwithError("creation d'image");
+    }
+    //texture
+    SDL_Texture *texture=NULL;
+    texture=SDL_CreateTextureFromSurface(renderer,image);
+    SDL_FreeSurface(image);
+    if (texture==NULL)
+    {
+        SDL_DestroyRenderer(renderer);
+        SDL_DestroyWindow(window);
+        SDL_ExitwithError("creation de texture");
+    }
+
+    SDL_Rect rectangle;
+    if (SDL_QueryTexture(texture,NULL,NULL,&rectangle.w,&rectangle.h)!=0)
+    {
+        SDL_DestroyRenderer(renderer);
+        SDL_DestroyWindow(window);
+        SDL_ExitwithError("creation de charger la texture");
+    }
+
+    rectangle.x=(800-rectangle.w)/2;
+    rectangle.y=(600-rectangle.h)/2;
+
+    if(SDL_RenderCopy(renderer,texture,NULL,&rectangle)!=0)
+    {
+        SDL_DestroyRenderer(renderer);
+        SDL_DestroyWindow(window);
+        SDL_ExitwithError("creation d'afficher texture");
+    }
+
+    SDL_RenderPresent(renderer);
+    SDL_Delay(3000);
+
+    SDL_DestroyTexture(texture);
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(window);
+    SDL_Quit();
+    return EXIT_SUCCESS;
+}
+
+
+
+
+
+
+void SDL_ExitwithError(const char* message)
+{
+    printf("Erreur: %s %s",message,SDL_GetError());
+    SDL_Quit();
+    exit(EXIT_FAILURE);
+}

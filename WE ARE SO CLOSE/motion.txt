@@ -1,0 +1,20 @@
+case SDL_MOUSEMOTION:
+                    if(event.motion.x>200 && event.motion.x<400 && event.motion.y>525 && event.motion.y<575 && onrestart==-1)
+                    {
+                        onrestart=1;
+                        if(hint_etat==1)
+                        {
+                            putpion_with_hint(window,onrestart);
+                        }
+                        else{SDL_Delay(33);putpion(window,onrestart);}
+                    }
+                    if((event.motion.x<200 || event.motion.x>400 || event.motion.y<525 || event.motion.y>575) && onrestart==1)
+                    {
+                        onrestart=-1;
+                        if(hint_etat==1)
+                        {
+                            putpion_with_hint(window,onrestart);
+                        }
+                        else{putpion(window,onrestart);}
+                    }
+                    break;
