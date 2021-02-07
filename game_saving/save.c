@@ -12,13 +12,13 @@ int save(int *last_turn, char *mode,char *player_name)
     do{
 
         fscanf(stdin,"%s",game_name);
-        sprintf(path,"games/%s/%s/game-%s%s",mode,player_name,game_name,extension);
+        sprintf(path,"games/%s/%s/game-%s%s",player_name,mode,game_name,extension);
 
         if (!fopen(path,"rb"))
         {
-            break;
+            break;//if the file doesn't exist we will break from the do while
         }
-        printf("nom existe deja : entrer un nouveau nom pour la partie :");
+        printf("name already exist : try another party name :");//else we will say to the user that the game already exist
 
        }while(1);
 
@@ -31,20 +31,21 @@ int save(int *last_turn, char *mode,char *player_name)
         return -1;//create or recreate the file
     }
 
-    printf("Swq");
    if (!fwrite(&last_turn,1,sizeof(int),file))
             {
                 printf("\n writing unsuccessful : player");
                 return -1;
                 fclose(file);
             }
-            printf("he");
+
     if (!fwrite(board,1,sizeof(int)*SIZE_OF_BOARD,file))
             {
                 printf("\nwriting unsuccessful : board ");
                 return -1;
                 fclose(file);
             }
+    
+    //if we want to add something CRTL-C CTRL-V the previous if 
 
 
     /* Fermeture du fichier : */
