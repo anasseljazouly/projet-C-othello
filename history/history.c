@@ -38,3 +38,34 @@ void save_history (int pos_l,int pos_c,int player,char *player_name,char *game_n
 }
 
 
+
+void reload_history (char *player_name,char *game_name,char *mode)
+{
+    //Access the file
+    char *path[100];
+    FILE *file=NULL;
+
+    //we get the path 
+    sprintf(path,"games/%s/%s/history-%s.txt",player_name,mode,game_name);//why games ? because the main folder which contain the game is named games
+    //we should have a path like :games/1vs1/imad/history-imad&hamza.txt
+    
+    //open the file
+    file=fopen(path,"r");
+    if(file==NULL)
+    {
+        printf("file didn t open ");
+        return -1;//create or recreate the file
+    }
+
+    //save the mouvement 
+    while(feof(file))
+    {
+        //not completed yet # jani mout n3as
+    }
+
+    //close the file
+    fprintf(file,mouvement);
+    fclose(file);
+    return ;
+}
+
