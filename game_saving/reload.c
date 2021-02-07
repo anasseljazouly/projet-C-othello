@@ -11,8 +11,8 @@ int reload(int *last_turn,char *mode,char *player_name)
 
     do{
 
-        fscanf(stdin,"%s",game_name);
-        sprintf(path,"games/%s/%s/game-%s%s",mode,player_name,game_name,extension);
+        fscanf(stdin,"%s",game_name);//take the name of the party
+        sprintf(path,"games/%s/%s/game-%s%s",player_name,mode,game_name,extension);
 
 
         if (!fopen(path,"rb"))
@@ -44,8 +44,8 @@ int reload(int *last_turn,char *mode,char *player_name)
             printf("\nreading unsuccessful : board");
             fclose(file);
             return -1;
-
         }
+    //if we add something in the save we should add it also here as reading 
 
     /* Fermeture du fichier : */
     fclose(file);
