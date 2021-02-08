@@ -392,3 +392,12 @@
 	"begin_code.h"
 	"close_code.h"
 
+1612680903 source:c:\users\my pc\documents\github\projet-c-othello\we are so close\main.c
+	<stdlib.h>
+	<stdio.h>
+	<string.h>
+	<SDL.h>
+	<SDL_ttf.h>
+	<unistd.h>
+	<sys/stat.h>
+
