@@ -71,7 +71,7 @@ int evaluation()
 	return sum;
 }
 
-				  //board    //  -inf +inf	   //0 or 1
+	     //board    //4  -inf +inf	   //0 or 1
 eval minimax(position, depth, alpha, beta, maximizingPlayer)
 {
 	if (depth == 0 || GAME_OVER)
