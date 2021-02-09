@@ -71,22 +71,23 @@ int evaluation()
 	return sum;
 }
 
-				  //board    //  -inf +inf	   //0 or 1
-eval minimax(position, depth, alpha, beta, maximizingPlayer)
+	     //board           //4  -inf +inf	   //0 or 1
+eval minimax(int board[8][8],int depth,int alpha,int beta,int maximizingPlayer)
 {
-	if (depth == 0 || GAME_OVER)
+	if (depth == 0 || last_turn==0)
 	{
 		eval maxeval;
 		maxeval._eval=evaluation();
 		return maxeval;
 	}
-
+	board_list *list_boards;
+	list_board=list_board_global;
 	if (maximizingPlayer)
 	{//black
 		eval maxEval ;
 		maxEval._eval=-infinity;
 		//make the possible moves
-		list_mouvement L=AI();
+		list_mouvement L=AI();//we are using Highlight_board
 
 		for (;L.indice_list_possible>=0;L.indice_list_possible--)
 		{
